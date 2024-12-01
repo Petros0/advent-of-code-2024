@@ -1,21 +1,53 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    fun readInputIntoList(inputPath: String): Pair<MutableList<Int>, MutableList<Int>> {
+        val input = readInput(inputPath);
+        val firstList = mutableListOf<Int>()
+        val secondList = mutableListOf<Int>()
+        val delimiter = "   "
+        input.lineSequence()
+            .filter { it.isNotEmpty() }
+            .forEach {
+                val (first, second) = it.split(delimiter).map(String::toInt)
+                firstList.add(first)
+                secondList.add(second)
+            }
+        return Pair(firstList, secondList)
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun part1(inputPath: String): Int {
+        val (firstList, secondList) = readInputIntoList(inputPath)
+        firstList.sort()
+        secondList.sort()
+        check(firstList.size == secondList.size)
+
+        var totalDistance = 0
+        firstList.forEachIndexed { index, first ->
+            val second = secondList[index]
+            val distance = when {
+                first > second -> first - second
+                first < second -> second - first
+                else -> 0
+            }
+            totalDistance += distance
+        }
+
+        return totalDistance
     }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
+    fun part2(inputPath: String): Int {
+        val (firstList, secondList) = readInputIntoList(inputPath)
 
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+        val secondListMap = mutableMapOf<Int, Int>()
+        secondList.forEach {
+            secondListMap[it] = secondListMap.getOrDefault(it, 0) + 1
+        }
 
-    // Read the input from the `src/Day01.txt` file.
-    val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+        return firstList
+            .filter { secondListMap.containsKey(it) }
+            .sumOf { it * secondListMap[it]!! }
+    }
+
+    println(part1("Day01_test"))
+    println(part2("Day01_test"))
+
 }
