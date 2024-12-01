@@ -31,7 +31,14 @@ fun main() {
             totalDistance += distance
         }
 
-        return totalDistance
+        return firstList.zip(secondList).sumOf {
+            val (first, second) = it
+            when {
+                first > second -> first - second
+                first < second -> second - first
+                else -> 0
+            }
+        }
     }
 
     fun part2(inputPath: String): Int {
@@ -47,7 +54,7 @@ fun main() {
             .sumOf { it * secondListMap[it]!! }
     }
 
-    println(part1("Day01_test"))
+    println(part1("Day01"))
     println(part2("Day01_test"))
 
 }
