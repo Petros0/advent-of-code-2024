@@ -10,6 +10,9 @@ fun readInputAndTrim(name: String) = Path("src/$name.txt").readText().trim().lin
 
 fun readInput(name: String) = Path("src/$name.txt").readText()
 
+fun readAsString(fileName: String, delimiter: String = ""): String =
+    readInput(fileName).lines().reduce { a, b -> "$a$delimiter$b" }
+
 /**
  * Converts string to md5 hash.
  */
