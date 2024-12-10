@@ -12,4 +12,12 @@ data class Point2D(val x: Int, val y: Int) {
         val SOUTH = Point2D(0, 1)
         val WEST = Point2D(-1, 0)
     }
+
+    fun cardinalNeighbors(): Set<Point2D> =
+        setOf(
+            this + NORTH,
+            this + EAST,
+            this + SOUTH,
+            this + WEST
+        )
 }
